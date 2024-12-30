@@ -1,0 +1,335 @@
+about:
+  date: December 30, 2024 14:24:49
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+info:
+  number_relationships: 11
+  number_tables: 12
+info_toggle_checked: true
+resources:
+  Customer:
+    attributes:
+    - label: ' name*'
+      name: name
+      search: true
+      sort: true
+    - name: phone
+    - name: email
+    - name: id
+    description: This stores customer details who visit or purchase from the restaurant.
+    info_list: This stores customer details who visit or purchase from the restaurant.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - customer_id
+      name: OrderList
+      resource: Order
+    - direction: tomany
+      fks:
+      - customer_id
+      name: ReservationList
+      resource: Reservation
+    type: Customer
+    user_key: name
+  Employee:
+    attributes:
+    - label: ' name*'
+      name: name
+      search: true
+      sort: true
+    - name: role
+    - name: phone
+    - name: id
+    description: Dataset capturing employee information working within the restaurant.
+    info_list: Dataset capturing employee information working within the restaurant.
+    type: Employee
+    user_key: name
+  Ingredient:
+    attributes:
+    - label: ' name*'
+      name: name
+      search: true
+      sort: true
+    - name: supplier_id
+    - name: id
+    description: Ingredient table captures information about ingredients needed for
+      menu items, supplier info.
+    info_list: Ingredient table captures information about ingredients needed for
+      menu items, supplier info.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - ingredient_id
+      name: InventoryList
+      resource: Inventory
+    - direction: toone
+      fks:
+      - supplier_id
+      name: supplier
+      resource: Supplier
+    type: Ingredient
+    user_key: name
+  Inventory:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: ingredient_id
+    - name: amount
+    - name: last_updated
+      type: DATETIME
+    description: Captures information about current inventory level for ingredients,
+      last update history.
+    info_list: Captures information about current inventory level for ingredients,
+      last update history.
+    tab_groups:
+    - direction: toone
+      fks:
+      - ingredient_id
+      name: ingredient
+      resource: Ingredient
+    type: Inventory
+    user_key: id
+  Menu:
+    attributes:
+    - label: ' name*'
+      name: name
+      search: true
+      sort: true
+    - name: restaurant_id
+    - name: description
+    - name: id
+    description: This table contains list of menus offered by a restaurant.
+    info_list: This table contains list of menus offered by a restaurant.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - menu_id
+      name: MenuItemList
+      resource: MenuItem
+    - direction: toone
+      fks:
+      - restaurant_id
+      name: restaurant
+      resource: Restaurant
+    type: Menu
+    user_key: name
+  MenuItem:
+    attributes:
+    - label: ' name*'
+      name: name
+      search: true
+      sort: true
+    - name: menu_id
+    - name: description
+    - name: price
+    - name: id
+    description: This table lists items in the menus with their descriptions and prices.
+    info_list: This table lists items in the menus with their descriptions and prices.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - menu_item_id
+      name: OrderItemList
+      resource: OrderItem
+    - direction: toone
+      fks:
+      - menu_id
+      name: menu
+      resource: Menu
+    type: MenuItem
+    user_key: name
+  Order:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: customer_id
+    - name: restaurant_id
+    - name: date
+      type: DATETIME
+    description: This page shows orders made by customers at a restaurant.
+    info_list: This page shows orders made by customers at a restaurant.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - order_id
+      name: OrderItemList
+      resource: OrderItem
+    - direction: tomany
+      fks:
+      - order_id
+      name: PaymentList
+      resource: Payment
+    - direction: toone
+      fks:
+      - customer_id
+      name: customer
+      resource: Customer
+    - direction: toone
+      fks:
+      - restaurant_id
+      name: restaurant
+      resource: Restaurant
+    type: Order
+    user_key: id
+  OrderItem:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: menu_item_id
+    - name: order_id
+    - name: quantity
+    description: Linked to orders, this contains individual menu items, quantity ordered
+      in a specific order.
+    info_list: Linked to orders, this contains individual menu items, quantity ordered
+      in a specific order.
+    tab_groups:
+    - direction: toone
+      fks:
+      - menu_item_id
+      name: menu_item
+      resource: MenuItem
+    - direction: toone
+      fks:
+      - order_id
+      name: order
+      resource: Order
+    type: OrderItem
+    user_key: id
+  Payment:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: order_id
+    - name: amount
+    - name: date
+      type: DATETIME
+    description: Payment records storing information about payments made against orders.
+    info_list: Payment records storing information about payments made against orders.
+    tab_groups:
+    - direction: toone
+      fks:
+      - order_id
+      name: order
+      resource: Order
+    type: Payment
+    user_key: id
+  Reservation:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: customer_id
+    - name: restaurant_id
+    - name: datetime
+      type: DATETIME
+    - name: num_people
+    description: Holds data pertaining reserving tables by customers at restaurants.
+    info_list: Holds data pertaining reserving tables by customers at restaurants.
+    tab_groups:
+    - direction: toone
+      fks:
+      - customer_id
+      name: customer
+      resource: Customer
+    - direction: toone
+      fks:
+      - restaurant_id
+      name: restaurant
+      resource: Restaurant
+    type: Reservation
+    user_key: id
+  Restaurant:
+    attributes:
+    - label: ' name*'
+      name: name
+      search: true
+      sort: true
+    - name: address
+    - name: phone
+    - name: email
+    - name: id
+    description: This page shows data about each restaurant including contact information
+      and location.
+    info_list: This page shows data about each restaurant including contact information
+      and location.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - restaurant_id
+      name: MenuList
+      resource: Menu
+    - direction: tomany
+      fks:
+      - restaurant_id
+      name: OrderList
+      resource: Order
+    - direction: tomany
+      fks:
+      - restaurant_id
+      name: ReservationList
+      resource: Reservation
+    type: Restaurant
+    user_key: name
+  Supplier:
+    attributes:
+    - label: ' name*'
+      name: name
+      search: true
+      sort: true
+    - name: contact
+    - name: email
+    - name: id
+    description: Stores details of suppliers who provide ingredients or products to
+      the restaurant.
+    info_list: Stores details of suppliers who provide ingredients or products to
+      the restaurant.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - supplier_id
+      name: IngredientList
+      resource: Ingredient
+    type: Supplier
+    user_key: name
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    detail_mode: tab
+    edit_on_mode: dblclick
+    exclude_listpicker: false
+    include_translation: 'false'
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    new_mode: dialog
+    pick_style: list
+    row_height: small,
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: 'false'

@@ -1,0 +1,418 @@
+"models":
+- "classname": |-
+    Restaurant
+  "code": |-
+    class Restaurant(Base):
+        __tablename__ = 'restaurants'
+
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        name = Column(String)
+        address = Column(String)
+        phone = Column(String)
+        email = Column(String)
+  "description": |-
+    This table stores data about each restaurant including contact information and location.
+  "name": |-
+    Restaurant
+- "classname": |-
+    Menu
+  "code": |-
+    class Menu(Base):
+        __tablename__ = 'menus'
+
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        restaurant_id = Column(Integer, ForeignKey('restaurants.id'))
+        name = Column(String)
+        description = Column(String)
+  "description": |-
+    This table contains list of menus offered by a restaurant.
+  "name": |-
+    Menu
+- "classname": |-
+    MenuItem
+  "code": |-
+    class MenuItem(Base):
+        __tablename__ = 'menu_items'
+
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        menu_id = Column(Integer, ForeignKey('menus.id'))
+        name = Column(String)
+        description = Column(String)
+        price = Column(Integer)
+  "description": |-
+    This table lists items in the menus with their descriptions and prices.
+  "name": |-
+    MenuItem
+- "classname": |-
+    Customer
+  "code": |-
+    class Customer(Base):
+        __tablename__ = 'customers'
+
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        name = Column(String)
+        phone = Column(String)
+        email = Column(String)
+  "description": |-
+    This stores customer details who visit or purchase from the restaurant.
+  "name": |-
+    Customer
+- "classname": |-
+    Order
+  "code": |-
+    class Order(Base):
+        __tablename__ = 'orders'
+
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        customer_id = Column(Integer, ForeignKey('customers.id'))
+        restaurant_id = Column(Integer, ForeignKey('restaurants.id'))
+        date = Column(DateTime)
+  "description": |-
+    This table stores orders made by customers at a restaurant.
+  "name": |-
+    Order
+- "classname": |-
+    OrderItem
+  "code": |-
+    class OrderItem(Base):
+        __tablename__ = 'order_items'
+
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        order_id = Column(Integer, ForeignKey('orders.id'))
+        menu_item_id = Column(Integer, ForeignKey('menu_items.id'))
+        quantity = Column(Integer)
+  "description": |-
+    Linked to orders, this contains individual menu items, quantity ordered in a specific order.
+  "name": |-
+    OrderItem
+- "classname": |-
+    Supplier
+  "code": |-
+    class Supplier(Base):
+        __tablename__ = 'suppliers'
+
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        name = Column(String)
+        contact = Column(String)
+        email = Column(String)
+  "description": |-
+    Stores details of suppliers who provide ingredients or products to the restaurant.
+  "name": |-
+    Supplier
+- "classname": |-
+    Ingredient
+  "code": |-
+    class Ingredient(Base):
+        __tablename__ = 'ingredients'
+
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        name = Column(String)
+        supplier_id = Column(Integer, ForeignKey('suppliers.id'))
+  "description": |-
+    Ingredient table captures information about ingredients needed for menu items, supplier info.
+  "name": |-
+    Ingredient
+- "classname": |-
+    Inventory
+  "code": |-
+    class Inventory(Base):
+        __tablename__ = 'inventory'
+
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        ingredient_id = Column(Integer, ForeignKey('ingredients.id'))
+        amount = Column(Integer)
+        last_updated = Column(DateTime)
+  "description": |-
+    Captures information about current inventory level for ingredients, last update history.
+  "name": |-
+    Inventory
+- "classname": |-
+    Employee
+  "code": |-
+    class Employee(Base):
+        __tablename__ = 'employees'
+
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        name = Column(String)
+        role = Column(String)
+        phone = Column(String)
+  "description": |-
+    Dataset capturing employee information working within the restaurant.
+  "name": |-
+    Employee
+- "classname": |-
+    Reservation
+  "code": |-
+    class Reservation(Base):
+        __tablename__ = 'reservations'
+
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        customer_id = Column(Integer, ForeignKey('customers.id'))
+        restaurant_id = Column(Integer, ForeignKey('restaurants.id'))
+        datetime = Column(DateTime)
+        num_people = Column(Integer)
+  "description": |-
+    Holds data pertaining reserving tables by customers at restaurants.
+  "name": |-
+    Reservation
+- "classname": |-
+    Payment
+  "code": |-
+    class Payment(Base):
+        __tablename__ = 'payments'
+
+        id = Column(Integer, primary_key=True, autoincrement=True)
+        order_id = Column(Integer, ForeignKey('orders.id'))
+        amount = Column(Integer)
+        date = Column(DateTime)
+  "description": |-
+    Payment records storing information about payments made against orders.
+  "name": |-
+    Payment
+"name": |-
+  RestaurantManagement
+"rules": []
+"test_data": |-
+  Each table has been populated with 4 rows of data as Python objects. Specific data provided in 'test_data_rows' key.
+"test_data_rows":
+- "code": |-
+    restaurant1 = Restaurant(name="Fine Dine", address="123 Culinary Blvd", phone="1234567890", email="info@finedine.com")
+  "test_data_row_variable": |-
+    restaurant1
+- "code": |-
+    restaurant2 = Restaurant(name="Bistro Cafe", address="456 Gourmet Rd", phone="0987654321", email="contact@bistrocafe.com")
+  "test_data_row_variable": |-
+    restaurant2
+- "code": |-
+    restaurant3 = Restaurant(name="Taste Paradise", address="789 Flavor St", phone="1122334455", email="hello@tasteparadise.com")
+  "test_data_row_variable": |-
+    restaurant3
+- "code": |-
+    restaurant4 = Restaurant(name="Pizza Palace", address="111 Dough Ave", phone="9988776655", email="pizza@pizzapalace.com")
+  "test_data_row_variable": |-
+    restaurant4
+- "code": |-
+    menu1 = Menu(restaurant_id=1, name="Summer Menu", description="Seasonal offerings")
+  "test_data_row_variable": |-
+    menu1
+- "code": |-
+    menu2 = Menu(restaurant_id=2, name="Winter Warmers", description="Cozy and warm dishes")
+  "test_data_row_variable": |-
+    menu2
+- "code": |-
+    menu3 = Menu(restaurant_id=3, name="Spring Specials", description="Fresh spring produce")
+  "test_data_row_variable": |-
+    menu3
+- "code": |-
+    menu4 = Menu(restaurant_id=4, name="Autumn Delights", description="Taste of fall")
+  "test_data_row_variable": |-
+    menu4
+- "code": |-
+    menu_item1 = MenuItem(menu_id=1, name="Grilled Chicken", description="Tender grilled chicken", price=15)
+  "test_data_row_variable": |-
+    menu_item1
+- "code": |-
+    menu_item2 = MenuItem(menu_id=2, name="Creamy Tomato Soup", description="Perfect for winters", price=8)
+  "test_data_row_variable": |-
+    menu_item2
+- "code": |-
+    menu_item3 = MenuItem(menu_id=3, name="Asparagus Salad", description="Spring fresh salad", price=12)
+  "test_data_row_variable": |-
+    menu_item3
+- "code": |-
+    menu_item4 = MenuItem(menu_id=4, name="Pumpkin Pie", description="Sweet and savory pie", price=10)
+  "test_data_row_variable": |-
+    menu_item4
+- "code": |-
+    customer1 = Customer(name="John Doe", phone="2345678901", email="john@doemail.com")
+  "test_data_row_variable": |-
+    customer1
+- "code": |-
+    customer2 = Customer(name="Jane Smith", phone="3456789012", email="jane@smithmail.com")
+  "test_data_row_variable": |-
+    customer2
+- "code": |-
+    customer3 = Customer(name="Daniel Craig", phone="4567890123", email="dan@craigmail.com")
+  "test_data_row_variable": |-
+    customer3
+- "code": |-
+    customer4 = Customer(name="Emily Clark", phone="5678901234", email="emily@clarkmail.com")
+  "test_data_row_variable": |-
+    customer4
+- "code": |-
+    order1 = Order(customer_id=1, restaurant_id=1, date=datetime(2023, 11, 1, 19, 45))
+  "test_data_row_variable": |-
+    order1
+- "code": |-
+    order2 = Order(customer_id=2, restaurant_id=2, date=datetime(2023, 11, 3, 20, 0))
+  "test_data_row_variable": |-
+    order2
+- "code": |-
+    order3 = Order(customer_id=3, restaurant_id=3, date=datetime(2023, 11, 4, 18, 30))
+  "test_data_row_variable": |-
+    order3
+- "code": |-
+    order4 = Order(customer_id=4, restaurant_id=4, date=datetime(2023, 11, 5, 21, 15))
+  "test_data_row_variable": |-
+    order4
+- "code": |-
+    order_item1 = OrderItem(order_id=1, menu_item_id=1, quantity=2)
+  "test_data_row_variable": |-
+    order_item1
+- "code": |-
+    order_item2 = OrderItem(order_id=2, menu_item_id=2, quantity=1)
+  "test_data_row_variable": |-
+    order_item2
+- "code": |-
+    order_item3 = OrderItem(order_id=3, menu_item_id=3, quantity=3)
+  "test_data_row_variable": |-
+    order_item3
+- "code": |-
+    order_item4 = OrderItem(order_id=4, menu_item_id=4, quantity=1)
+  "test_data_row_variable": |-
+    order_item4
+- "code": |-
+    supplier1 = Supplier(name="Fresh Farms", contact="9876543210", email="contact@freshfarms.com")
+  "test_data_row_variable": |-
+    supplier1
+- "code": |-
+    supplier2 = Supplier(name="Local Harvest", contact="8765432109", email="info@localharvest.com")
+  "test_data_row_variable": |-
+    supplier2
+- "code": |-
+    supplier3 = Supplier(name="Global Foods", contact="7654321098", email="hello@globalfoods.com")
+  "test_data_row_variable": |-
+    supplier3
+- "code": |-
+    supplier4 = Supplier(name="Organic Source", contact="6543210987", email="sales@organicsource.com")
+  "test_data_row_variable": |-
+    supplier4
+- "code": |-
+    ingredient1 = Ingredient(name="Chicken Breast", supplier_id=1)
+  "test_data_row_variable": |-
+    ingredient1
+- "code": |-
+    ingredient2 = Ingredient(name="Tomatoes", supplier_id=2)
+  "test_data_row_variable": |-
+    ingredient2
+- "code": |-
+    ingredient3 = Ingredient(name="Asparagus", supplier_id=3)
+  "test_data_row_variable": |-
+    ingredient3
+- "code": |-
+    ingredient4 = Ingredient(name="Pumpkin", supplier_id=4)
+  "test_data_row_variable": |-
+    ingredient4
+- "code": |-
+    inventory1 = Inventory(ingredient_id=1, amount=50, last_updated=datetime(2023, 11, 1))
+  "test_data_row_variable": |-
+    inventory1
+- "code": |-
+    inventory2 = Inventory(ingredient_id=2, amount=100, last_updated=datetime(2023, 11, 2))
+  "test_data_row_variable": |-
+    inventory2
+- "code": |-
+    inventory3 = Inventory(ingredient_id=3, amount=60, last_updated=datetime(2023, 11, 3))
+  "test_data_row_variable": |-
+    inventory3
+- "code": |-
+    inventory4 = Inventory(ingredient_id=4, amount=30, last_updated=datetime(2023, 11, 4))
+  "test_data_row_variable": |-
+    inventory4
+- "code": |-
+    employee1 = Employee(name="Alice Brown", role="Chef", phone="3334445556")
+  "test_data_row_variable": |-
+    employee1
+- "code": |-
+    employee2 = Employee(name="Bob White", role="Server", phone="4445556667")
+  "test_data_row_variable": |-
+    employee2
+- "code": |-
+    employee3 = Employee(name="Carol Green", role="Manager", phone="5556667778")
+  "test_data_row_variable": |-
+    employee3
+- "code": |-
+    employee4 = Employee(name="David Black", role="Cleaner", phone="6667778889")
+  "test_data_row_variable": |-
+    employee4
+- "code": |-
+    reservation1 = Reservation(customer_id=1, restaurant_id=1, datetime=datetime(2023, 11, 1, 18, 0), num_people=4)
+  "test_data_row_variable": |-
+    reservation1
+- "code": |-
+    reservation2 = Reservation(customer_id=2, restaurant_id=2, datetime=datetime(2023, 11, 2, 19, 0), num_people=2)
+  "test_data_row_variable": |-
+    reservation2
+- "code": |-
+    reservation3 = Reservation(customer_id=3, restaurant_id=3, datetime=datetime(2023, 11, 3, 20, 0), num_people=5)
+  "test_data_row_variable": |-
+    reservation3
+- "code": |-
+    reservation4 = Reservation(customer_id=4, restaurant_id=4, datetime=datetime(2023, 11, 4, 21, 0), num_people=3)
+  "test_data_row_variable": |-
+    reservation4
+- "code": |-
+    payment1 = Payment(order_id=1, amount=30, date=datetime(2023, 11, 1, 20, 0))
+  "test_data_row_variable": |-
+    payment1
+- "code": |-
+    payment2 = Payment(order_id=2, amount=8, date=datetime(2023, 11, 3, 20, 30))
+  "test_data_row_variable": |-
+    payment2
+- "code": |-
+    payment3 = Payment(order_id=3, amount=36, date=datetime(2023, 11, 4, 19, 0))
+  "test_data_row_variable": |-
+    payment3
+- "code": |-
+    payment4 = Payment(order_id=4, amount=10, date=datetime(2023, 11, 5, 21, 30))
+  "test_data_row_variable": |-
+    payment4
+"test_data_sqlite": |-
+  INSERT INTO restaurants (id, name, address, phone, email) VALUES (1, "Fine Dine", "123 Culinary Blvd", "1234567890", "info@finedine.com");
+  INSERT INTO restaurants (id, name, address, phone, email) VALUES (2, "Bistro Cafe", "456 Gourmet Rd", "0987654321", "contact@bistrocafe.com");
+  INSERT INTO restaurants (id, name, address, phone, email) VALUES (3, "Taste Paradise", "789 Flavor St", "1122334455", "hello@tasteparadise.com");
+  INSERT INTO restaurants (id, name, address, phone, email) VALUES (4, "Pizza Palace", "111 Dough Ave", "9988776655", "pizza@pizzapalace.com");
+  INSERT INTO menus (id, restaurant_id, name, description) VALUES (1, 1, "Summer Menu", "Seasonal offerings");
+  INSERT INTO menus (id, restaurant_id, name, description) VALUES (2, 2, "Winter Warmers", "Cozy and warm dishes");
+  INSERT INTO menus (id, restaurant_id, name, description) VALUES (3, 3, "Spring Specials", "Fresh spring produce");
+  INSERT INTO menus (id, restaurant_id, name, description) VALUES (4, 4, "Autumn Delights", "Taste of fall");
+  INSERT INTO menu_items (id, menu_id, name, description, price) VALUES (1, 1, "Grilled Chicken", "Tender grilled chicken", 15);
+  INSERT INTO menu_items (id, menu_id, name, description, price) VALUES (2, 2, "Creamy Tomato Soup", "Perfect for winters", 8);
+  INSERT INTO menu_items (id, menu_id, name, description, price) VALUES (3, 3, "Asparagus Salad", "Spring fresh salad", 12);
+  INSERT INTO menu_items (id, menu_id, name, description, price) VALUES (4, 4, "Pumpkin Pie", "Sweet and savory pie", 10);
+  INSERT INTO customers (id, name, phone, email) VALUES (1, "John Doe", "2345678901", "john@doemail.com");
+  INSERT INTO customers (id, name, phone, email) VALUES (2, "Jane Smith", "3456789012", "jane@smithmail.com");
+  INSERT INTO customers (id, name, phone, email) VALUES (3, "Daniel Craig", "4567890123", "dan@craigmail.com");
+  INSERT INTO customers (id, name, phone, email) VALUES (4, "Emily Clark", "5678901234", "emily@clarkmail.com");
+  INSERT INTO orders (id, customer_id, restaurant_id, date) VALUES (1, 1, 1, "2023-11-01 19:45:00");
+  INSERT INTO orders (id, customer_id, restaurant_id, date) VALUES (2, 2, 2, "2023-11-03 20:00:00");
+  INSERT INTO orders (id, customer_id, restaurant_id, date) VALUES (3, 3, 3, "2023-11-04 18:30:00");
+  INSERT INTO orders (id, customer_id, restaurant_id, date) VALUES (4, 4, 4, "2023-11-05 21:15:00");
+  INSERT INTO order_items (id, order_id, menu_item_id, quantity) VALUES (1, 1, 1, 2);
+  INSERT INTO order_items (id, order_id, menu_item_id, quantity) VALUES (2, 2, 2, 1);
+  INSERT INTO order_items (id, order_id, menu_item_id, quantity) VALUES (3, 3, 3, 3);
+  INSERT INTO order_items (id, order_id, menu_item_id, quantity) VALUES (4, 4, 4, 1);
+  INSERT INTO suppliers (id, name, contact, email) VALUES (1, "Fresh Farms", "9876543210", "contact@freshfarms.com");
+  INSERT INTO suppliers (id, name, contact, email) VALUES (2, "Local Harvest", "8765432109", "info@localharvest.com");
+  INSERT INTO suppliers (id, name, contact, email) VALUES (3, "Global Foods", "7654321098", "hello@globalfoods.com");
+  INSERT INTO suppliers (id, name, contact, email) VALUES (4, "Organic Source", "6543210987", "sales@organicsource.com");
+  INSERT INTO ingredients (id, name, supplier_id) VALUES (1, "Chicken Breast", 1);
+  INSERT INTO ingredients (id, name, supplier_id) VALUES (2, "Tomatoes", 2);
+  INSERT INTO ingredients (id, name, supplier_id) VALUES (3, "Asparagus", 3);
+  INSERT INTO ingredients (id, name, supplier_id) VALUES (4, "Pumpkin", 4);
+  INSERT INTO inventory (id, ingredient_id, amount, last_updated) VALUES (1, 1, 50, "2023-11-01");
+  INSERT INTO inventory (id, ingredient_id, amount, last_updated) VALUES (2, 2, 100, "2023-11-02");
+  INSERT INTO inventory (id, ingredient_id, amount, last_updated) VALUES (3, 3, 60, "2023-11-03");
+  INSERT INTO inventory (id, ingredient_id, amount, last_updated) VALUES (4, 4, 30, "2023-11-04");
+  INSERT INTO employees (id, name, role, phone) VALUES (1, "Alice Brown", "Chef", "3334445556");
+  INSERT INTO employees (id, name, role, phone) VALUES (2, "Bob White", "Server", "4445556667");
+  INSERT INTO employees (id, name, role, phone) VALUES (3, "Carol Green", "Manager", "5556667778");
+  INSERT INTO employees (id, name, role, phone) VALUES (4, "David Black", "Cleaner", "6667778889");
+  INSERT INTO reservations (id, customer_id, restaurant_id, datetime, num_people) VALUES (1, 1, 1, "2023-11-01 18:00:00", 4);
+  INSERT INTO reservations (id, customer_id, restaurant_id, datetime, num_people) VALUES (2, 2, 2, "2023-11-02 19:00:00", 2);
+  INSERT INTO reservations (id, customer_id, restaurant_id, datetime, num_people) VALUES (3, 3, 3, "2023-11-03 20:00:00", 5);
+  INSERT INTO reservations (id, customer_id, restaurant_id, datetime, num_people) VALUES (4, 4, 4, "2023-11-04 21:00:00", 3);
+  INSERT INTO payments (id, order_id, amount, date) VALUES (1, 1, 30, "2023-11-01 20:00:00");
+  INSERT INTO payments (id, order_id, amount, date) VALUES (2, 2, 8, "2023-11-03 20:30:00");
+  INSERT INTO payments (id, order_id, amount, date) VALUES (3, 3, 36, "2023-11-04 19:00:00");
+  INSERT INTO payments (id, order_id, amount, date) VALUES (4, 4, 10, "2023-11-05 21:30:00");
